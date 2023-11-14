@@ -16,7 +16,7 @@ def reply(func):
             logging.warning(f'Sleeping {sw.x}s due to {sw}')
             await sleep(sw.x)
             await func(*args, **kwargs)
-        await sleep(1.2)
+        await sleep(0)
 
     return wrapper
 
