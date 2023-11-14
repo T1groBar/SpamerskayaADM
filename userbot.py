@@ -1,8 +1,9 @@
+import multiprocessing
 import sys
 import logging
 from asyncio import sleep
 from datetime import datetime
-import time  # Добавлен импорт time
+import time
 from pyrogram import Client, filters
 from pyrogram.errors.exceptions import ChannelPrivate
 from modules.posts import TextPost, PicturePost, StickerPost, RandomPost
@@ -16,7 +17,7 @@ last_media_group = 123
 # Spam Posts - stores posts to spam, supported types: TextPost, PicturePost, StickerPost, RandomPost
 spam_posts = [RandomPost(TextPost("1st!"), TextPost("2nd!"), TextPost("3rd!"))]
 # App - stores Pyrogram instance
-app = Client("data/my_account", config_file="config.ini", workers=10)
+app = Client("data/my_account", config_file="config.ini", workers=1)
 # Delay - delay between requests
 delay = 0
 sys.tracebacklimit = 0
@@ -63,7 +64,7 @@ async def answer(_, message):
     for post in spam_posts:
         await post.reply_to(message_to_answer, app)
         # Добавлена задержка, чтобы избежать ошибки FLOOD_WAIT_X
-        time.sleep(1.1)  # Измените значение на необходимое количество секунд
+        time.sleep(0.6)  # Измените значение на необходимое количество секунд
 
     logger.info(f"|{message.chat.title}|:SMS ОТПРАВЛЕНО")
 
@@ -113,4 +114,9 @@ try:
     app.run()
 except ValueError:
     logger.error("The config.ini is configured incorrectly!")
-    
+
+
+num_cores = multiprocessing.cpu_count()
+
+
+app = Client("data/my_account", config_file="config.ini", workers=num_cores)
