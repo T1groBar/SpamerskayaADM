@@ -28,7 +28,7 @@ class TextPost:
 
     @reply
     async def reply_to(self, message: pyrogram.types.Message, app: pyrogram.Client, disable_web_page_preview=True):
-        await app.send_message(message.chat.id, self.text, reply_to_message_id=message.message_id, schedule_date=message.date + self.delay)
+        await app.send_message(message.chat.id, self.text, reply_to_message_id=message.message_id, schedule_date=message.date + self.delay, disable_web_page_preview=True)
 
 
 class PicturePost:
